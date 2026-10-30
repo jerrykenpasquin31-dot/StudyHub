@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>StudyHub</title><link rel="stylesheet" href="style.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script></head>
+<body>
+<div id="authPage" class="auth-page hidden"></div>
+<div id="app" class="hidden">
+<aside class="sidebar">
+ <div class="brand"><img class="brand-logo" src="assets/studyhub-logo.png" alt="StudyHub logo"><img class="brand-mark" src="assets/studyhub-mark.png" alt="StudyHub"></div>
+ <div class="nav-label">MAIN MENU</div>
+ <button class="nav active" data-page="dashboard">⌂ <span>Dashboard</span></button>
+ <button class="nav" data-page="library">▤ <span>Study Library</span></button>
+ <button class="nav" data-page="upload">＋ <span>Upload Material</span></button>
+ <button class="nav" data-page="mine">▣ <span>My Materials</span></button><button class="nav" data-page="messages">✉ <span>Messages</span></button>
+ <div id="adminNav"></div><div id="teacherNav"></div>
+ <div class="sidebar-bottom"><button class="nav" data-page="profile">◎ <span>My Profile</span></button><button class="nav" onclick="confirmLogout()">↪ <span>Log out</span></button></div>
+</aside>
+<main class="main">
+ <header class="header"><div><div class="crumb">StudyHub / <b id="pageName">Dashboard</b></div><h1 id="welcome">Good day!</h1></div><div id="headerUser"></div></header>
+ <div id="content"></div>
+</main>
+</div>
+<div id="modal" class="modal hidden"><div class="modal-box"><button class="x" onclick="closeModal()">×</button><div id="modalBody"></div></div></div><div id="confirmModal" class="modal hidden"><div class="modal-box confirm-box"><button class="x" onclick="closeConfirm()">×</button><div id="confirmBody"></div></div></div>
+<script src="app.js"></script></body></html>
