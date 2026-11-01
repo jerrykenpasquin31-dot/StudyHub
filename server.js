@@ -21,6 +21,11 @@ app.use('/api/chat',require('./routes/chat'));
 app.use('/api/annotations',require('./routes/annotations'));
 app.use('/api/stickers',require('./routes/stickers'));
 app.use('/api/ai',require('./routes/ai'));
-app.use(express.static(path.join(__dirname,'../frontend')));
-app.get('*',(req,res)=>res.sendFile(path.join(__dirname,'../frontend/index.html')));
+const frontendPath = path.join(__dirname, 'frontend');
+
+app.use(express.static(frontendPath));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
 app.listen(process.env.PORT||5000,()=>console.log('StudyHub: http://localhost:'+(process.env.PORT||5000)));
