@@ -1,0 +1,10 @@
+const express=require('express');
+const db=require('../config/db');
+const {auth,admin}=require('../middleware/auth');
+const router=express.Router();
+router.use(auth,admin);
+router.get('/stats',async(_,res)=>{try{const [[users]]=await db.query('SELECT COUNT(*) count FROM users');const [[notes]]=await db.query('SELECT COUNT(*) count FROM notes');const [[subjects]]=await db.query('SELECT COUNT(*) count FROM subjects');const [[votes]]=await db.query('SELECT COALESCE(SUM(upvotes),0) count FROM notes');res.json({users:users.count,notes:notes.count,subjects:subjects.count,votes:votes.count})}catch(e){res.status(500).json({message:e.message})}});
+router.get('/users',async(_,res)=>{try{const [r]=await db.query('SELECT id,name,email,role,created_at FROM users ORDER BY created_at DESC');res.json(r)}catch(e){res.status(500).json({message:e.message})}});
+router.patch('/users/:id/role',async(req,res)=>{try{const role=String(req.body.role||'').toLowerCase();if(!['student','teacher','admin'].includes(role))return res.status(400).json({message:'Invalid role.'});if(Number(req.params.id)===Number(req.user.id)&&role!=='admin')return res.status(400).json({message:'You cannot remove your own admin role.'});await db.query('UPDATE users SET role=? WHERE id=?',[role,req.params.id]);res.json({message:'Role updated'})}catch(e){res.status(400).json({message:e.message})}});
+router.delete('/users/:id',async(req,res)=>{try{const id=Number(req.params.id);if(id===Number(req.user.id))return res.status(400).json({message:'You cannot delete your own account here.'});const [rows]=await db.query('SELECT role FROM users WHERE id=?',[id]);if(!rows.length)return res.status(404).json({message:'User not found.'});await db.query('DELETE FROM users WHERE id=?',[id]);res.json({message:'User deleted'})}catch(e){res.status(400).json({message:e.message})}});
+module.exports=router;
